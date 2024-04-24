@@ -1,0 +1,9 @@
+body {
+    background-color: rgb(180, 180, 180);
+    margin: 0;
+}
+.whole-page {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
