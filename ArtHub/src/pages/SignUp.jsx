@@ -13,17 +13,23 @@ function SignUp() {
         const email = e.target[1].value;
         const password = e.target[2].value;
 
-        const { data, error } = await supabase.auth.signUp({
-            email: email,
-            password: password,
-            options: {
-                data: {
-                    username: username
+        try {
+            const { data, error } = await supabase.auth.signUp({
+                email: email,
+                password: password,
+                options: {
+                    data: {
+                        display_name: username,
+                    }
                 }
-            }
-        })
+            })
+        } catch (error) {
+            window.alert(`Error: ${error.message}`);
+            return;
+        }
+        
         navigate('/');
-        window.alert(`Signed Up!`);
+        window.alert(`${username} Signed Up!`);
     };
     
     return (
