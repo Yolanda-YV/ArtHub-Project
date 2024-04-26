@@ -14,9 +14,8 @@ function Post({image, title, date, likes, id}) {
     }
     return (
         <div className='post'>
-            <div className='img-container'>
-                <img src={image} id={id} onClick={onPostClick}/>
-            </div>
+            
+            <img src={image} id={id} onClick={onPostClick}/>
             <div className='binfo-container'>
                 <h2>{title}</h2>
                 <p>{date}</p>
