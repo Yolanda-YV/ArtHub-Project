@@ -30,6 +30,7 @@ function App() {
         <Navbar signedIn={false} className="nav"/>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/postdetail/:id" element={<PostDetail />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />
         </Routes>

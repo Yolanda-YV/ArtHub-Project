@@ -3,9 +3,11 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import supabase from '../supabase';
 import { v4 as uuidv4 } from 'uuid'; //to generate unique id for images uploaded to storage
+import { HashLoader } from 'react-spinners';
 
 function PostEdit() {
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
     const { id } = useParams();
     const [currentIMG, setCurrentIMG] = useState(null);
     const [currentTitle, setCurrentTitle] = useState(null);
@@ -22,6 +24,7 @@ function PostEdit() {
                 if (error) {
                     throw error;
                 }
+                setLoading(false);
             } catch (error) {
                 window.alert(`Error: ${error.message}`);
                 return;
@@ -29,6 +32,8 @@ function PostEdit() {
         }
         if (id) {
             fetchPost();
+        } else {
+            setLoading(false);
         }
     }, []);
 
@@ -50,11 +55,10 @@ function PostEdit() {
             const { imgdata, imgerror } = await supabase.storage
                 .from('ArtWork')
                 .upload(filePath, file); 
-        
             if (imgerror) {
                 throw imgerror;
             }
-            console.log(getURL(filePath));
+            setCurrentIMG(getURL(filePath));
             const { data, error } = await supabase.from('Post').insert({
                 user_id: user.id,
                 user: user.user_metadata.display_name,
@@ -89,36 +93,47 @@ function PostEdit() {
         window.alert('Post Updated!');
     };
     return (
-        <div className='postedit-container'>
-            <img src={currentIMG ? currentIMG : "/src/assets/NOIMG1.png"}/>
-            <form onSubmit={id ? onUpdate : onCreate}>
-                <input 
-                    type='file' 
-                    accept='.png,.jpg'
-                    onChange={e => {
-                        let reader = new FileReader(); // new FileReader Object
-                        // Callback function to be called when the file is loaded
-                        reader.onloadend = () => {
-                            setCurrentIMG(reader.result);
-                        };
-                        // Reading file, when done, calls onloadend event
-                        reader.readAsDataURL(e.target.files[0]);
-                    }}/>
-                <input 
-                    type='text' 
-                    placeholder='Title' 
-                    value={currentTitle}
-                    onChange={e => setCurrentTitle(e.target.value)} />
-                <textarea 
-                    placeholder='Description' 
-                    value={currentDescription}
-                    onChange={e => setCurrentDescription(e.target.value)} />
-                <div className='postedit-btn'>
-                    <button type='button' onClick={() => navigate(-1)}>Cancel</button>
-                    <button type='submit'>Save</button>
+        <>
+            {loading ? (
+                <div className='loader-div'>
+                    <HashLoader 
+                        loading={loading}
+                        size={100}
+                        color='#4B1212'/>
+                </div>   
+            ) : (
+                <div className='postedit-container'>
+                    <img src={currentIMG ? currentIMG : "/src/assets/NOIMG1.png"}/>
+                    <form onSubmit={id ? onUpdate : onCreate}>
+                        <input 
+                            type='file' 
+                            accept='.png,.jpg'
+                            onChange={e => {
+                                let reader = new FileReader(); // new FileReader Object
+                                // Callback function to be called when the file is loaded
+                                reader.onloadend = () => {
+                                    setCurrentIMG(reader.result);
+                                };
+                                // Reading file, when done, calls onloadend event
+                                reader.readAsDataURL(e.target.files[0]);
+                            }}/>
+                        <input 
+                            type='text' 
+                            placeholder='Title' 
+                            value={currentTitle}
+                            onChange={e => setCurrentTitle(e.target.value)} />
+                        <textarea 
+                            placeholder='Description' 
+                            value={currentDescription}
+                            onChange={e => setCurrentDescription(e.target.value)} />
+                        <div className='postedit-btn'>
+                            <button type='button' onClick={() => navigate(-1)}>Cancel</button>
+                            <button type='submit'>Save</button>
+                        </div>
+                    </form>
                 </div>
-            </form>
-        </div>
+            )}
+        </> 
     );
 }
 

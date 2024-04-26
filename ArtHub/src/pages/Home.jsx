@@ -1,12 +1,16 @@
 import React, { useEffect } from 'react';
-import { useState } from 'react';
+import { useState, CSSProperties } from 'react';
 import { useNavigate } from 'react-router-dom';
 import supabase from '../supabase';
 import '../index.css';
 import Post from '../components/Post';
+import { ClockLoader, HashLoader, DotLoader, GridLoader, ClimbingBoxLoader, BeatLoader } from 'react-spinners'; // For loading animation
+
+
 
 function Home() {
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(true); // For loading animation
     const [posts, setPosts] = useState(null);
     const [search, setSearch] = useState(null);
     const [ascendingKudos, setAscendingKudos] = useState(true);
@@ -17,7 +21,12 @@ function Home() {
             try {
                 const { data, error } = await supabase.from('Post').select().order('created_at', {ascending: false});
                 console.log(data);
+                if (error) {
+                    throw error;
+                }
                 setPosts(data);
+                setLoading(false);
+                console.log(loading)
             } catch (error) {
                 window.alert(`Error: ${error.message}`);
                 return;
@@ -31,7 +40,11 @@ function Home() {
         try {
             const { data, error } = await supabase.from('Post').select().ilike('title', '%'+search+'%');
             console.log(data);
+            if (error) {
+                throw error;
+            }
             setPosts(data);
+            setLoading(false);
         } catch (error) {
             window.alert(`Error: ${error.message}`);
             return;
@@ -42,7 +55,11 @@ function Home() {
         try {
             const { data, error } = await supabase.from('Post').select().order('likes', {ascending: ascendingKudos});
             console.log(data);
+            if (error) {
+                throw error;
+            }
             setPosts(data);
+            setLoading(false);
         } catch (error) {
             window.alert(`Error: ${error.message}`);
             return;
@@ -53,14 +70,18 @@ function Home() {
         try {
             const { data, error } = await supabase.from('Post').select().order('created_at', {ascending: ascendingTime});
             console.log(data);
+            if (error) {
+                throw error;
+            }
             setPosts(data);
+            setLoading(false);
         } catch (error) {
             window.alert(`Error: ${error.message}`);
             return;
         }
     };
     return (
-        <div>
+        <div className='home'>
             <h1>Home</h1>
             <p>Welcome to ArtHub!</p>
             <div className='filter-forms'>
@@ -85,17 +106,26 @@ function Home() {
                     </form>
                 </div>
             </div>
+            {loading ? (
+                <div className='loader-div'>
+                    <HashLoader 
+                        loading={loading}
+                        size={100}
+                        color='#4B1212'/>
+                </div>   
+            ) : (
+                <div className='post-container'>
+                    {posts && posts.map((post, index) => (
+                        <Post 
+                            key={index} 
+                            title={post.title} 
+                            date={new Date(post.created_at).toLocaleString()} 
+                            likes={post.likes}
+                            image={post.image} id={post.id}/>
+                    ))}
+                </div>
+            )}
             
-            <div className='post-container'>
-                {posts && posts.map((post, index) => (
-                    <Post 
-                        key={index} 
-                        title={post.title} 
-                        date={new Date(post.created_at).toLocaleString()} 
-                        likes={post.likes}
-                        image={post.image} id={post.id}/>
-                ))}
-            </div>
         </div>
     );
 }

@@ -1,3 +1,11 @@
+.loader-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 15%;
+}
+
 /*Forms*/
 form {
   display: flex;
@@ -159,6 +167,8 @@ form textarea {
 }
 
 /*HOME PAGE*/
+.home {
+}
 .filter-forms {
   display: flex;
   flex-direction: column;
@@ -347,4 +357,30 @@ form textarea {
 }
 .reaction-div input {
   width: 30px;
+}
+.post-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+.post-options {
+  display: flex;
+  flex-direction: row;
+  align-items: space-between;
+  gap: 0.5rem;
+}
+.post-options button {
+  min-height: 50px;
+  border-radius: 0.5rem;
+  border: black 1px solid;
+  background-color: rgb(7, 7, 19);
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+.post-options button:hover {
+  background-color: rgb(1, 1, 3);
 }

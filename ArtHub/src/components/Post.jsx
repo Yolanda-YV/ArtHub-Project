@@ -1,8 +1,11 @@
 import React from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import RedHeartIMG from '/src/assets/RedHeart.png';
+import { HashLoader } from 'react-spinners'; 
 
 function Post({image, title, date, likes, id}) {
+    const [loader, setLoader] = useState(true); // For loading animation
     const navigate = useNavigate();
     const onPostClick = (e) => {
         const id = e.target.id;
