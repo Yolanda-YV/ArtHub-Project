@@ -112,7 +112,7 @@ form textarea {
   object-fit: contain;
   border-radius: 0.5rem;
 }
-.post img:hover {
+.post-img:hover {
   cursor: pointer;
   box-shadow: 0 0 10px 5px #814444;
 }
