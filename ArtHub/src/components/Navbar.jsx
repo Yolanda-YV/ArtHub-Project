@@ -1,16 +1,28 @@
 import React from 'react';
 import supabase from '../supabase';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import '../index.css';
 import { Link, useNavigate } from 'react-router-dom';
-
-function Navbar({signedIn}) {
+import Dropdown from 'react-bootstrap/Dropdown';
+function Navbar({signedIn, user}) {
     const navigate = useNavigate();
+    const [User, setUser] = useState(null);
     const onLogOut = async () => {
         const { error } = await supabase.auth.signOut();
         navigate('/');
         window.alert('Logged Out!');
     }
+    useEffect(() => {
+        if (signedIn && user) {
+            try {
+                setUser(user);
+                console.log(user, user.user_metadata.display_name);
+            } catch (error) {
+                console.log(error);
+                return
+            }
+        }
+    }, [signedIn]);
 
     if (!signedIn) {
         return (
@@ -39,6 +51,9 @@ function Navbar({signedIn}) {
                     </li>
                     <li>
                         <Link onClick={onLogOut} className='nav-item'>Log Out</Link>
+                    </li>
+                    <li>
+                        <Link className='nav-item-nosel'>Hi {User ? User.user_metadata.display_name : 'User'}</Link>
                     </li>
                 </ul>
             </nav>

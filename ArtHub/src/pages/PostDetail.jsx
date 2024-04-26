@@ -153,7 +153,7 @@ function PostDetail() {
                                 <p><Link to='/signin'>Sign in</Link> to leave a comment or kudos</p>
                             )}
                             {comments.map((comment, index) => (
-                                <Comment key={index} username={comment.user} comment={comment.content} date={comment.created_at}/>
+                                <Comment key={index} username={comment.user} comment={comment.content} date={new Date(comment.created_at).toLocaleString()}/>
                             ))}
                         </div>
                     ) : null}

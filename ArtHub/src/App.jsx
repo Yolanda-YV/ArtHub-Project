@@ -23,7 +23,7 @@ function App() {
       subscription.unsubscribe()
     }
   }, [])
-
+  
   if (!session) {
     return (
       <div className='whole-page'>
@@ -39,7 +39,7 @@ function App() {
   } else {
     return (
       <div className='whole-page'>
-        <Navbar signedIn={true} className="nav"/>
+        <Navbar signedIn={true} user={session.user} className="nav"/>
         <div>
           <Routes>
             <Route path="/" element={<Home />} />
