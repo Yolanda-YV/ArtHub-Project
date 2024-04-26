@@ -2,6 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import supabase from '../supabase';
+import { v4 as uuidv4 } from 'uuid'; //to generate unique id for images uploaded to storage
 
 function PostEdit() {
     const navigate = useNavigate();
@@ -31,12 +32,29 @@ function PostEdit() {
         }
     }, []);
 
+    const getURL = (path) => {
+        const { data } = supabase.storage.from('ArtWork').getPublicUrl(path);
+        return data;
+    };
     const onCreate = async (e) => {
         e.preventDefault();
+        // Getting file input
+        const file = e.target[0].files[0];
+        console.log(file);
         // Getting the current user
         const { data: { user } } = await supabase.auth.getUser();
         // Inserting the post into the database
         try {
+            // Uploading the image to the storage
+            const filePath = `${user.id}/${uuidv4()}`;
+            const { imgdata, imgerror } = await supabase.storage
+                .from('ArtWork')
+                .upload(filePath, file); 
+        
+            if (imgerror) {
+                throw imgerror;
+            }
+            console.log(getURL(filePath));
             const { data, error } = await supabase.from('Post').insert({
                 user_id: user.id,
                 user: user.user_metadata.display_name,
@@ -44,6 +62,9 @@ function PostEdit() {
                 description: currentDescription,
                 image: currentIMG
             });
+            if (error) {
+                throw error;
+            }
         } catch (error) {
             window.alert(`Error: ${error.message}`);
             return;
