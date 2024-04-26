@@ -8,17 +8,9 @@ function Navbar({signedIn, user}) {
     const navigate = useNavigate();
     const [User, setUser] = useState(null);
     const onLogOut = async () => {
-        // const { error } = await supabase.auth.signOut();
-        // navigate('/');
-        // window.alert('Logged Out!');
-        try {
-            await supabase.auth.signOut();
-        } catch (error) {
-            console.error('Error signing out:', error);
-        } finally {
-            localStorage.removeItem('sb:token');
-            navigate('/');
-        }
+        const { error } = await supabase.auth.signOut();
+        navigate('/');
+        window.alert('Logged Out!');
     }
     useEffect(() => {
         if (signedIn && user) {
