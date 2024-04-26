@@ -11,7 +11,13 @@ function Navbar({signedIn, user}) {
         // const { error } = await supabase.auth.signOut();
         // navigate('/');
         // window.alert('Logged Out!');
-        supabase.auth.signOut();
+        try {
+            await supabase.auth.signOut();
+            localStorage.removeItem('supabase.auth.token');
+            navigate('/');
+        } catch (error) {
+            console.error('Error signing out:', error);
+        }
     }
     useEffect(() => {
         if (signedIn && user) {
