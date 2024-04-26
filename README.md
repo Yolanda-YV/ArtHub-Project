@@ -2,7 +2,7 @@
 
 Submitted by: **Yolanda Vega**
 
-This web app: **An art sharing website similar to apps like Deviant Art. User may post, comment, and like content on the app.**
+This web app: **An art-sharing website similar to apps like Deviant Art, Artfol, etc. Users may post, comment, and like content on the app.**
 
 Time spent: **36** hours spent in total
 
