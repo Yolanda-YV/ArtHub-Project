@@ -13,10 +13,11 @@ function Navbar({signedIn, user}) {
         // window.alert('Logged Out!');
         try {
             await supabase.auth.signOut();
-            localStorage.removeItem('supabase.auth.token');
-            navigate('/');
         } catch (error) {
             console.error('Error signing out:', error);
+        } finally {
+            localStorage.removeItem('sb:token');
+            navigate('/');
         }
     }
     useEffect(() => {
