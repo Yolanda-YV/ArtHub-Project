@@ -75,11 +75,12 @@ function PostDetail() {
             if (error) {
                 throw error;
             }
-            window.alert('Post deleted!');
         } catch (error) {
             window.alert(`Error: ${error.message}`);
             return;
         }
+        navigate('/');
+        window.alert('Post deleted!');
     };
   
     return (

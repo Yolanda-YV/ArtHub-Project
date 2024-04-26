@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import supabase from '../supabase';
 
-function PostEdit({image, title, description}) {
+function PostEdit() {
     const navigate = useNavigate();
     const { id } = useParams();
     const [currentIMG, setCurrentIMG] = useState(null);
