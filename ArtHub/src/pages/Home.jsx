@@ -19,7 +19,7 @@ function Home() {
     useEffect(() => {
         const getPosts = async () => {
             try {
-                const { data, error } = await supabase.from('Post').select().order('created_at', {ascending: false});
+                const { data, error } = await supabase.from('Post').select();
                 console.log(data);
                 if (error) {
                     throw error;
@@ -37,7 +37,11 @@ function Home() {
     
     const onSearch = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
+            if (search == "") {
+                setSearch('*');
+            }
             const { data, error } = await supabase.from('Post').select().ilike('title', '%'+search+'%');
             console.log(data);
             if (error) {
@@ -52,6 +56,7 @@ function Home() {
     };
     const onFilterByKudos = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             const { data, error } = await supabase.from('Post').select().order('likes', {ascending: ascendingKudos});
             console.log(data);
@@ -67,6 +72,7 @@ function Home() {
     };
     const onFilterByTime = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             const { data, error } = await supabase.from('Post').select().order('created_at', {ascending: ascendingTime});
             console.log(data);

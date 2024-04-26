@@ -58,13 +58,13 @@ function PostEdit() {
             if (imgerror) {
                 throw imgerror;
             }
-            setCurrentIMG(getURL(filePath));
+            const publicURL = getURL(filePath);
             const { data, error } = await supabase.from('Post').insert({
                 user_id: user.id,
                 user: user.user_metadata.display_name,
                 title: currentTitle,
                 description: currentDescription,
-                image: currentIMG
+                image: publicURL
             });
             if (error) {
                 throw error;
