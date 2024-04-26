@@ -8,9 +8,9 @@ function Navbar({signedIn, user}) {
     const navigate = useNavigate();
     const [User, setUser] = useState(null);
     const onLogOut = async () => {
-        const { error } = await supabase.auth.signOut();
-        navigate('/');
-        window.alert('Logged Out!');
+        // const { error } = await supabase.auth.signOut();
+        // navigate('/');
+        // window.alert('Logged Out!');
         supabase.auth.signOut();
     }
     useEffect(() => {
