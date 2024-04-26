@@ -7,15 +7,10 @@ import Post from '../components/Post';
 
 function Home() {
     const navigate = useNavigate();
-    /*const [posts, setPosts] = useState([
-        {author:'user1', title: 'Image 1', description: 'Description of Image 1', image: './src/assets/IMG1.png'}, 
-        {author:'user2', title: 'Image 2', description: 'Description of Image 2', image: './src/assets/IMG2.png'},
-        {author:'user1', title: 'Image 3', description: 'Description of Image 3', image: './src/assets/IMG3.png'},
-        {author:'user3', title: 'Image 4', description: 'Description of Image 4', image: './src/assets/IMG4.png'},
-        {author:'user4', title: 'Image 5', description: 'Description of Image 5', image: './src/assets/IMG5.png'},
-        {author:'user2', title: 'Image 6', description: 'Description of Image 6', image: './src/assets/IMG6.png'},
-    ]);*/
     const [posts, setPosts] = useState(null);
+    const [search, setSearch] = useState(null);
+    const [ascendingKudos, setAscendingKudos] = useState(true);
+    const [ascendingTime, setAscendingTime] = useState(true);
 
     useEffect(() => {
         const getPosts = async () => {
@@ -31,11 +26,66 @@ function Home() {
         getPosts();
     }, []);
     
-
+    const onSearch = async (e) => {
+        e.preventDefault();
+        try {
+            const { data, error } = await supabase.from('Post').select().ilike('title', '%'+search+'%');
+            console.log(data);
+            setPosts(data);
+        } catch (error) {
+            window.alert(`Error: ${error.message}`);
+            return;
+        }
+    };
+    const onFilterByKudos = async (e) => {
+        e.preventDefault();
+        try {
+            const { data, error } = await supabase.from('Post').select().order('likes', {ascending: ascendingKudos});
+            console.log(data);
+            setPosts(data);
+        } catch (error) {
+            window.alert(`Error: ${error.message}`);
+            return;
+        }
+    };
+    const onFilterByTime = async (e) => {
+        e.preventDefault();
+        try {
+            const { data, error } = await supabase.from('Post').select().order('created_at', {ascending: ascendingTime});
+            console.log(data);
+            setPosts(data);
+        } catch (error) {
+            window.alert(`Error: ${error.message}`);
+            return;
+        }
+    };
     return (
         <div>
             <h1>Home</h1>
             <p>Welcome to ArtHub!</p>
+            <div className='filter-forms'>
+                <form>
+                    <input type='text' placeholder='Search' onChange={(e) => setSearch(e.target.value)} />
+                    <button type='submit' onClick={onSearch}>Search</button>
+                </form>
+                <div>
+                    <form onSubmit={onFilterByKudos}>
+                        <select onChange={(e)=>setAscendingKudos(e.target.value === 'true')}>
+                            <option value={false}>High to Low</option>
+                            <option value={true}>Low to High</option>
+                        </select>
+                        <button type='submit'>Filter by Kudos</button>
+                    </form>
+                    <form onSubmit={onFilterByTime}>
+                        <select onChange={(e)=>setAscendingTime(e.target.value === 'true')}>
+                            <option value={false}>Oldest to Newest</option>
+                            <option value={true}>Newest to Oldest</option>
+                        </select>
+                        <button type='submit'>Filter by Time Created</button>
+                    </form>
+                </div>
+            </div>
+            
             <div className='post-container'>
                 {posts && posts.map((post, index) => (
                     <Post 

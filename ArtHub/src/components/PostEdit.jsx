@@ -26,7 +26,9 @@ function PostEdit() {
                 return;
             }
         }
-        fetchPost();
+        if (id) {
+            fetchPost();
+        }
     }, []);
 
     const onCreate = async (e) => {
@@ -65,7 +67,6 @@ function PostEdit() {
         navigate(-1)
         window.alert('Post Updated!');
     };
-    console.log(currentIMG, currentTitle, currentDescription);
     return (
         <div className='postedit-container'>
             <img src={currentIMG ? currentIMG : "/src/assets/NOIMG1.png"}/>
