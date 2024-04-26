@@ -79,7 +79,6 @@ function PostDetail() {
             window.alert(`Error: ${error.message}`);
             return;
         }
-        window.alert('Kudos given!');
     };
     const onDelete = async (e) => {
         try {
