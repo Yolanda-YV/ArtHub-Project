@@ -28,7 +28,7 @@ function App() {
         console.error('Error signing out:', error);
     } finally {
         localStorage.removeItem('sb:token');
-        navigate('/');
+        
     }
   }, [])
   
