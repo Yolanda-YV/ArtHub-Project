@@ -17,6 +17,12 @@ function Home() {
     const [ascendingTime, setAscendingTime] = useState(true);
 
     useEffect(() => {
+        try {
+            const { data: { user } } = supabase.auth.getUser();
+        } catch(error) { 
+            supabase.auth.signOut();
+        }
+        
         const getPosts = async () => {
             try {
                 const { data, error } = await supabase.from('Post').select();
