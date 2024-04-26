@@ -1,7 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import RedHeartIMG from '/src/assets/RedHeart.png';
 
-function Post({image, title, user, id}) {
+function Post({image, title, date, likes, id}) {
     const navigate = useNavigate();
     const onPostClick = (e) => {
         const id = e.target.id;
@@ -15,7 +16,8 @@ function Post({image, title, user, id}) {
             </div>
             <div className='binfo-container'>
                 <h2>{title}</h2>
-                <p>{user}</p>
+                <p>{date}</p>
+                <p><img src={RedHeartIMG}/>Kudos: {likes}</p>
             </div>
             
         </div>

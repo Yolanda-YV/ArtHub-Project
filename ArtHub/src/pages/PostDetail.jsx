@@ -1,23 +1,22 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import supabase from '../supabase';
 import '../index.css';
 import Comment from '../components/Comment';
+import PostEdit from '../components/PostEdit';
 import RedHeartIMG from '/src/assets/RedHeart.png';
 
 function PostDetail() {
     const [details, setDetails] = useState(null);
     const [comments, setComments] = useState(null);
     const { id } = useParams();
+    const navigate = useNavigate();
     useEffect(() => {
         const fetchPost = async () => {
             try {
                 const { data, error } = await supabase.from('Post').select().eq('id', id);
                 setDetails(data[0]);
-                
-                const date = new Date(data[0].created_at);
-                console.log(date);
             } catch (error) {
                 window.alert(`Error: ${error.message}`);
                 return;
@@ -70,11 +69,30 @@ function PostDetail() {
         }
         window.alert('Kudos given!');
     };
+    const onDelete = async (e) => {
+        try {
+            const { data, error } = await supabase.from('Post').delete().eq('id', id);
+            if (error) {
+                throw error;
+            }
+            window.alert('Post deleted!');
+        } catch (error) {
+            window.alert(`Error: ${error.message}`);
+            return;
+        }
+    };
+  
     return (
         <div className='post-fullinfo'>
             {details ? (
                 <div className='post-detail-container'>
-                    <h1>{details.title}</h1>
+                    <div className='post-header'>
+                        <h1>{details.title}</h1>
+                        <div className='post-options'>
+                            <button onClick={()=> navigate(`/editpost/${id}`)}>Edit</button>
+                            <button onClick={onDelete}>Delete</button>
+                        </div>
+                    </div>
                     <div className='post-detail'>
                         <img src={details.image}/>
                         <h3>{details.user}</h3>
@@ -82,9 +100,9 @@ function PostDetail() {
                         <div className='post-footer'>
                             <div className='reaction-div'>
                                 <input type='image' src={RedHeartIMG} onClick={onLike}></input>
-                                <p>{details.likes}</p>
+                                <p>{details.likes} Kudos</p>
                             </div>
-                            <p>{new Date(details.created_at).toLocaleDateString}</p>
+                            <p>{new Date(details.created_at).toLocaleString()}</p>
                         </div>
                     </div>
                 </div>
@@ -103,6 +121,7 @@ function PostDetail() {
             ) : null}
         </div>
     );
+    
 }
 
 export default PostDetail;

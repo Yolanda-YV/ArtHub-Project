@@ -38,7 +38,12 @@ function Home() {
             <p>Welcome to ArtHub!</p>
             <div className='post-container'>
                 {posts && posts.map((post, index) => (
-                    <Post key={index} title={post.title} user={post.user} image={post.image} id={post.id}/>
+                    <Post 
+                        key={index} 
+                        title={post.title} 
+                        date={new Date(post.created_at).toLocaleString()} 
+                        likes={post.likes}
+                        image={post.image} id={post.id}/>
                 ))}
             </div>
         </div>

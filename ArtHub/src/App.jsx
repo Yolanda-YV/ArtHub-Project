@@ -6,6 +6,7 @@ import { Route, Routes } from 'react-router-dom'
 import Home from './pages/Home'
 import CreatePost from './pages/CreatePost'
 import PostDetail from './pages/PostDetail'
+import EditPost from './pages/EditPost'
 import SignUp from './pages/SignUp'
 import SignIn from './pages/SignIn'
 
@@ -43,6 +44,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/createpost" element={<CreatePost />} />
             <Route path="/postdetail/:id" element={<PostDetail />} />
+            <Route path="/editpost/:id" element={<EditPost />} />
           </Routes>
         </div>
       </div>
