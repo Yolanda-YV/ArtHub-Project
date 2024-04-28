@@ -6,6 +6,8 @@ This web app: **An art-sharing website similar to apps like Deviant Art, Artfol,
 
 Time spent: **96** hours spent in total
 
+**Link to Deployed site:** https://arthub-fullstack-final.netlify.app/
+
 ## Required Features
 
 The following **required** functionality is completed:
@@ -45,12 +47,15 @@ Here's a walkthrough of implemented user stories:
 ![ViteReact-GoogleChrome2024-04-2616-53-02-ezgif com-video-to-gif-converter](https://github.com/Yolanda-YV/ArtHub-Project/assets/76263266/89bdbcb1-3d18-49ba-9778-2afac1274f24)
 
 
+
 <!-- Replace this with whatever GIF tool you used! -->
 GIF created with EzGif 
 <!-- Recommended tools:
 [Kap](https://getkap.co/) for macOS
 [ScreenToGif](https://www.screentogif.com/) for Windows
 [peek](https://github.com/phw/peek) for Linux. -->
+
+
 
 ## Notes
 
