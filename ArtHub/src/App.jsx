@@ -13,15 +13,24 @@ import SignIn from './pages/SignIn'
 function App() {
   const [session, setSession] = useState(null)
   useEffect(() => {
-    supabase.auth.getSession().then(( {data: {session}} ) => {
-      setSession(session)
-    })
-    const { data: {subscription} } = supabase.auth.onAuthStateChange(( _event, session ) => {
-      setSession(session)
-    })
-    return () => {
-      subscription.unsubscribe()
-    }
+    // supabase.auth.getSession().then(( {data: {session}} ) => {
+    //   setSession(session)
+    // })
+    // const { data: {subscription} } = supabase.auth.onAuthStateChange(( _event, session ) => {
+    //   setSession(session)
+    // })
+    // return () => {
+    //   subscription.unsubscribe()
+    // }
+
+    try {
+      supabase.auth.signOut();
+    } catch (error) {
+        console.error('Error signing out:', error);
+    } finally {
+        localStorage.removeItem('sb:token');
+        navigate('/');
+  }
   }, [])
   
   if (!session) {
